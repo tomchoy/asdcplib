@@ -155,6 +155,7 @@ Options:\n\
                       Stream. May be issued multiple times.\n\
   -i                - Indicates input essence is interlaced fields (forces -Y)\n\
   -j <key-id-str>   - Write key ID instead of creating a random value\n\
+  -L <ul>           - Use provided Color Primaries UL \n\
   -J                - Write J2CLayout\n\
   -k <key-string>   - Use key for ciphertext operations\n\
   -l <first>,<second>\n\
@@ -529,9 +530,9 @@ public:
     memset(key_value, 0, KeyLen);
     memset(key_id_value, 0, UUIDlen);
 
-    coding_equations = g_dict->ul(MDD_CodingEquations_709);
-    color_primaries = g_dict->ul(MDD_ColorPrimaries_ITU709);
-    transfer_characteristic = g_dict->ul(MDD_TransferCharacteristic_ITU709);
+    //    coding_equations = g_dict->ul(MDD_CodingEquations_709);
+    //    color_primaries = g_dict->ul(MDD_ColorPrimaries_ITU709);
+    //    transfer_characteristic = g_dict->ul(MDD_TransferCharacteristic_ITU709);
     std::string mca_config_str;
 
     for ( int i = 1; i < argc; i++ )
@@ -817,6 +818,15 @@ public:
 		  }
 		break;
 
+	      case 'L':
+		TEST_EXTRA_ARG(i, 'L');
+		if ( ! color_primaries.DecodeHex(argv[i]) )
+		  {
+		    fprintf(stderr, "Error decoding ColorPrimaries UL value: %s\n", argv[i]);
+		    return;
+		  }
+		break;
+
 	      case 'r':
 		TEST_EXTRA_ARG(i, 'r');
 		if ( ! DecodeRational(argv[i], edit_rate) )
@@ -1096,9 +1106,12 @@ write_JP2K_file(CommandOptions& Options)
 
 	  if ( ASDCP_SUCCESS(result) )
 	    {
-	      tmp_dscr->CodingEquations = Options.coding_equations;
-	      tmp_dscr->TransferCharacteristic = Options.transfer_characteristic;
-	      tmp_dscr->ColorPrimaries = Options.color_primaries;
+         if (Options.coding_equations != UL())
+           tmp_dscr->CodingEquations = Options.coding_equations;
+         if (Options.transfer_characteristic != UL())
+           tmp_dscr->TransferCharacteristic = Options.transfer_characteristic;
+         if (Options.color_primaries != UL())
+           tmp_dscr->ColorPrimaries = Options.color_primaries;
 	      tmp_dscr->ScanningDirection = 0;
 	      tmp_dscr->PictureEssenceCoding = Options.picture_coding;
 	      tmp_dscr->ComponentMaxRef = Options.rgba_MaxRef;
