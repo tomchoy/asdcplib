@@ -777,7 +777,7 @@ extern MXF::RIP *g_RIP;
 	  m_HeaderPart.AddChildObject(m_FilePackage);
 	  m_ContentStorage->Packages.push_back(m_FilePackage->InstanceUID);
 
-      trackID = 1;
+      trackID = 2;
 	  if ( tc_frame_rate )
 	    {
 	      TrackSet<TimecodeComponent> FPTCTrack =
