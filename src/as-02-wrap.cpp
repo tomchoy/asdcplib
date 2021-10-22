@@ -158,6 +158,8 @@ Options:\n\
   -L <ul>           - Use provided Color Primaries UL \n\
   -J                - Write J2CLayout\n\
   -k <key-string>   - Use key for ciphertext operations\n\
+  -N <width>,<height>,<x-offset>,<y-offset> \n\
+                    - Use provided Active Area parameters\n\
   -l <first>,<second>\n\
                     - Integer values that set the VideoLineMap\n\
   -m <expr>         - Write MCA labels using <expr>.  Example:\n\
@@ -305,6 +307,11 @@ public:
   ui32_t cdci_WhiteRefLevel;
   ui32_t cdci_ColorRange;
 
+  ui32_t active_width;
+  ui32_t active_height;
+  ui32_t active_offset_x;
+  ui32_t active_offset_y;
+
   ui32_t md_min_luminance, md_max_luminance;
   ASDCP::MXF::ThreeColorPrimaries md_primaries;
   ASDCP::MXF::ColorPrimary md_white_point;
@@ -375,6 +382,26 @@ public:
 	fprintf(stderr, "Unexpected CDCI video referece levels.\n");
 	return false;
       }
+
+    return true;
+  }
+
+  //
+  bool set_active_area(const std::string& arg)
+  {
+    std::list<std::string> active_area = Kumu::km_token_split(arg, ",");
+    if ( active_area.size() != 4 )
+      {
+	fprintf(stderr, "Expecting four parameters for active area.\n");
+	return false;
+      }
+
+    std::list<std::string>::const_iterator i = active_area.begin();
+
+    active_width    = strtol((*(i++)).c_str(), 0, 10);
+    active_height   = strtol((*(i++)).c_str(), 0, 10);
+    active_offset_x = strtol((*(i++)).c_str(), 0, 10);
+    active_offset_y = strtol((*(i++)).c_str(), 0, 10);
 
     return true;
   }
@@ -521,6 +548,7 @@ public:
     mca_config(g_dict), rgba_MaxRef(1023), rgba_MinRef(0),
     horizontal_subsampling(2), vertical_subsampling(2), component_depth(10),
     frame_layout(0), aspect_ratio(ASDCP::Rational(4,3)), aspect_ratio_flag(false), field_dominance(0),
+    active_width(0), active_height(0), active_offset_y(0), active_offset_x(0),
     mxf_header_size(16384), cdci_WhiteRefLevel(940), cdci_BlackRefLevel(64), cdci_ColorRange(897),
     md_min_luminance(0), md_max_luminance(0), line_map(0,0), line_map_flag(false),
 	aces_authoring_information_flag(false), aces_picture_subdescriptor_flag(false), target_frame_subdescriptor_flag(false),
@@ -775,6 +803,14 @@ public:
 		if ( ! transfer_characteristic.DecodeHex(argv[i]) )
 		  {
 		    fprintf(stderr, "Error decoding TransferCharacteristic UL value: %s\n", argv[i]);
+		    return;
+		  }
+		break;
+
+	      case 'N':
+		TEST_EXTRA_ARG(i, 'N');
+		if ( ! set_active_area(argv[i]) )
+		  {
 		    return;
 		  }
 		break;
@@ -1128,6 +1164,14 @@ write_JP2K_file(CommandOptions& Options)
 		{
 		  tmp_dscr->MasteringDisplayPrimaries = Options.md_primaries;
 		  tmp_dscr->MasteringDisplayWhitePointChromaticity = Options.md_white_point;
+		}
+
+	      if ( Options.active_width || Options.active_height || Options.active_offset_x || Options.active_offset_y)
+		{
+                  tmp_dscr->ActiveWidth   = Options.active_width;
+                  tmp_dscr->ActiveHeight  = Options.active_height;
+                  tmp_dscr->ActiveXOffset = Options.active_offset_x;
+                  tmp_dscr->ActiveYOffset = Options.active_offset_y;
 		}
 
 	      essence_descriptor = static_cast<ASDCP::MXF::FileDescriptor*>(tmp_dscr);
