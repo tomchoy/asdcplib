@@ -734,7 +734,7 @@ extern MXF::RIP *g_RIP;
 	  m_HeaderPart.AddChildObject(m_MaterialPackage);
 	  m_ContentStorage->Packages.push_back(m_MaterialPackage->InstanceUID);
 
-	  ui32_t trackID = 1;
+	  ui32_t trackID = 2;
 	  if ( tc_frame_rate )
 	    {
 	      TrackSet<TimecodeComponent> MPTCTrack =
