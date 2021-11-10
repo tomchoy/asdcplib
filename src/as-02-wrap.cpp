@@ -1084,6 +1084,7 @@ write_JP2K_file(CommandOptions& Options)
 	      tmp_dscr->VerticalSubsampling = Options.vertical_subsampling;
 	      tmp_dscr->ComponentDepth = Options.component_depth;
 	      tmp_dscr->FrameLayout = Options.frame_layout;
+	      tmp_dscr->ColorSiting = 0
 	      tmp_dscr->AspectRatio = Options.aspect_ratio;
 	      tmp_dscr->FieldDominance = Options.field_dominance;
 	      tmp_dscr->WhiteReflevel = Options.cdci_WhiteRefLevel;
