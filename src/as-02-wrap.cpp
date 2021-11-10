@@ -1105,6 +1105,14 @@ write_JP2K_file(CommandOptions& Options)
 
 	      essence_descriptor = static_cast<ASDCP::MXF::FileDescriptor*>(tmp_dscr);
 
+	      if ( Options.active_width || Options.active_height || Options.active_offset_x || Options.active_offset_y)
+		{
+                  tmp_dscr->ActiveWidth   = Options.active_width;
+                  tmp_dscr->ActiveHeight  = Options.active_height;
+                  tmp_dscr->ActiveXOffset = Options.active_offset_x;
+                  tmp_dscr->ActiveYOffset = Options.active_offset_y;
+		}
+
 	      if (Options.write_j2clayout)
 		{
 		  jp2k_sub_descriptor = static_cast<ASDCP::MXF::JPEG2000PictureSubDescriptor*>(essence_sub_descriptors.back());
