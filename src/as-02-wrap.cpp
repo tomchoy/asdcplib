@@ -73,8 +73,8 @@ public:
 	0xb2, 0xe0, 0x46, 0xa7, 0x17, 0xe8, 0x4f, 0x42 };
       
       memcpy(ProductUUID, default_ProductUUID_Data, UUIDlen);
-      CompanyName = "WidgetCo";
-      ProductName = "as-02-wrap";
+      CompanyName = "MasteringCloud";
+      ProductName = "cerebro";
       ProductVersion = ASDCP::Version();
   }
 } s_MyInfo;
