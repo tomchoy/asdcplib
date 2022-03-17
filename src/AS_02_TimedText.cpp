@@ -425,6 +425,8 @@ AS_02::TimedText::MXFWriter::h__Writer::TimedText_TDesc_to_MD(TimedText::TimedTe
   TDescObj->ResourceID.Set(TDesc.AssetID);
   TDescObj->NamespaceURI = TDesc.NamespaceName;
   TDescObj->UCSEncoding = TDesc.EncodingName;
+  if (!TDesc.LanguageList.empty())
+    TDescObj->RFC5646LanguageTagList.set(TDesc.LanguageList);
 
   return RESULT_OK;
 }
