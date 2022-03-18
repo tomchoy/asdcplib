@@ -237,6 +237,7 @@ class AS_02::TimedText::ST2052_TextParser::h__TextParser
 public:
   std::string m_Filename;
   std::string m_XMLDoc;
+  std::string Language;
   TimedTextDescriptor  m_TDesc;
   ASDCP::mem_ptr<ASDCP::TimedText::IResourceResolver> m_DefaultResolver;
 
@@ -377,6 +378,9 @@ AS_02::TimedText::ST2052_TextParser::h__TextParser::OpenRead()
       m_TDesc.NamespaceName = IMSC1_textProfile;
     }
 
+  // Find the Language
+  Language = m_Root.GetAttrWithName("lang");
+
   // Find font resources for later packaging as GS partitions.
   AttributeVisitor font_visitor("fontFamily");
   apply_visitor(m_Root, font_visitor);
@@ -510,6 +514,15 @@ AS_02::TimedText::ST2052_TextParser::ReadTimedTextResource(std::string& s) const
 
   s = m_Parser->m_XMLDoc;
   return RESULT_OK;
+}
+
+// Reads the complete Timed Text Resource into the given string.
+std::string
+AS_02::TimedText::ST2052_TextParser::GetLanguage(void) const
+{
+
+  return m_Parser->Language;
+
 }
 
 //

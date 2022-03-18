@@ -364,6 +364,8 @@ namespace AS_02
 	  ST2052_TextParser();
 	  virtual ~ST2052_TextParser();
 
+	  std::string Language;
+
 	  // Opens an XML file for reading, parses data to provide a complete
 	  // set of stream metadata for the MXFWriter below.
 	  Result_t OpenRead(const std::string& filename) const;
@@ -382,6 +384,9 @@ namespace AS_02
 
 	  // Reads the complete Timed Text Resource into the given string.
 	  Result_t ReadTimedTextResource(std::string&) const;
+
+	  // Reads the complete Timed Text Resource into the given string.
+	  std::string GetLanguage(void) const;
 
 	  // Reads the Ancillary Resource having the given ID. Fails if the buffer
 	  // is too small or the resource does not exist. The optional Resolver

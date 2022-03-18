@@ -1780,7 +1780,7 @@ write_timed_text_file(CommandOptions& Options)
       Parser.FillTimedTextDescriptor(TDesc);
       TDesc.EditRate = Options.edit_rate;
       TDesc.ContainerDuration = Options.duration;
-      TDesc.LanguageList = Options.language;
+      TDesc.LanguageList = Options.language.length() ? Options.language : Parser.GetLanguage();
       FrameBuffer.Capacity(Options.fb_size);
 
       if ( ! Options.profile_name.empty() )
