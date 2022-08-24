@@ -1109,6 +1109,7 @@ write_JP2K_file(CommandOptions& Options)
 	      tmp_dscr->ComponentDepth = Options.component_depth;
 	      tmp_dscr->FrameLayout = Options.frame_layout;
 	      tmp_dscr->ColorSiting = 0;
+	      tmp_dscr->DisplayF2Offset = 0;
 	      tmp_dscr->AspectRatio = Options.aspect_ratio;
 	      tmp_dscr->FieldDominance = Options.field_dominance;
 	      tmp_dscr->WhiteReflevel = Options.cdci_WhiteRefLevel;
@@ -1185,6 +1186,7 @@ write_JP2K_file(CommandOptions& Options)
 	      tmp_dscr->PictureEssenceCoding = Options.picture_coding;
 	      tmp_dscr->ComponentMaxRef = Options.rgba_MaxRef;
 	      tmp_dscr->ComponentMinRef = Options.rgba_MinRef;
+	      tmp_dscr->DisplayF2Offset = 0;
 	      if (Options.line_map_flag)  tmp_dscr->VideoLineMap = Options.line_map;
 
 	      if ( Options.md_min_luminance || Options.md_max_luminance )
